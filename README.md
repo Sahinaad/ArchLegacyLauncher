@@ -1,40 +1,41 @@
-# Arch Linux-da Legacy Launcher və Yay Quraşdırma Təlimatı
 
-Bu təlimat Arch Linux əməliyyat sistemində **Yay** (AUR köməkçisi) və **Legacy Launcher** (Minecraft başladıcısı) quraşdırılmasını addım-addım izah edir.
+# Legacy Launcher and Yay Installation Guide on Arch Linux
 
----
-
-## Mündəricat
-
-1. [Tələblər](#tələblər)
-2. [Yay Nədir?](#yay-nədir)
-3. [Yay Quraşdırılması](#yay-quraşdırılması)
-4. [Legacy Launcher Quraşdırılması](#legacy-launcher-quraşdırılması)
-5. [Legacy Launcher İşə Salınması](#legacy-launcher-işə-salınması)
-6. [Problemlərin Həlli](#problemlərin-həlli)
+This guide provides step-by-step instructions for installing **Yay** (AUR helper) and **Legacy Launcher** (Minecraft launcher) on the Arch Linux operating system.
 
 ---
 
-## Tələblər
+## Table of Contents
 
-Quraşdırmaya başlamazdan əvvəl aşağıdakıların olduğundan əmin olun:
+1. [Requirements](#requirements)
+2. [What is Yay?](#what-is-yay)
+3. [Yay Installation](#yay-installation)
+4. [Legacy Launcher Installation](#legacy-launcher-installation)
+5. [Launching Legacy Launcher](#launching-legacy-launcher)
+6. [Troubleshooting](#troubleshooting)
 
-- ✅ Arch Linux quraşdırılmış sistem
-- ✅ İnternet bağlantısı
-- ✅ `sudo` icazələri olan istifadəçi
-- ✅ Əsas paketlər: `base-devel`, `git`
+---
 
-### Əsas Paketləri Yoxlamaq
+## Requirements
+
+Before starting the installation, make sure you have the following:
+
+- ✅ Arch Linux installed system
+- ✅ Internet connection
+- ✅ User with `sudo` privileges
+- ✅ Basic packages: `base-devel`, `git`
+
+### Checking Basic Packages
 
 ```bash
-# base-devel qrupunun quraşdırılıb-quraşdırılmadığını yoxlayın
+# Check if base-devel group is installed
 pacman -Q base-devel
 
-# git quraşdırılıb-quraşdırılmadığını yoxlayın
+# Check if git is installed
 pacman -Q git
 ```
 
-Əgər quraşdırılmayıbsa:
+If not installed:
 
 ```bash
 sudo pacman -S --needed base-devel git
@@ -42,235 +43,235 @@ sudo pacman -S --needed base-devel git
 
 ---
 
-## Yay Nədir?
+## What is Yay?
 
-**Yay** (Yet Another Yogurt) - Arch Linux üçün AUR (Arch User Repository) köməkçisidir. AUR, istifadəçilərin təqdim etdiyi paketlərin saxlandığı bir repozitoriyadır. Rəsmi Arch repozitoriyalarında olmayan proqramları AUR-dan quraşdıra bilərsiniz.
+**Yay** (Yet Another Yogurt) is an AUR (Arch User Repository) helper for Arch Linux. AUR is a repository where user-submitted packages are stored. You can install programs from AUR that are not available in the official Arch repositories.
 
 ---
 
-## Yay Quraşdırılması
+## Yay Installation
 
-### Addım 1: Müvəqqəti Qovluq Yaratmaq
+### Step 1: Create a Temporary Directory
 
 ```bash
-# /tmp qovluğunda müvəqqəti iş qovluğu yaradın
+# Create a temporary working directory in /tmp
 cd /tmp
 mkdir -p yay-build
 cd yay-build
 ```
 
-### Addım 2: Yay Mənbə Kodunu Endirmək
+### Step 2: Download Yay Source Code
 
 ```bash
-# Yay-ın GitHub reposundan klonlayın
+# Clone from Yay's GitHub repo
 git clone https://aur.archlinux.org/yay.git
 ```
 
-### Addım 3: Paket Qovluğuna Keçmək
+### Step 3: Navigate to the Package Directory
 
 ```bash
-# yay qovluğuna daxil olun
+# Enter the yay directory
 cd yay
 ```
 
-### Addım 4: Paketi Yığmaq və Quraşdırmaq
+### Step 4: Build and Install the Package
 
 ```bash
-# Paketi yığın və quraşdırın
+# Build and install the package
 makepkg -si
 ```
 
-> **Qeyd:** `makepkg -si` əmri:
-> - `-s` - Asılılıqları avtomatik quraşdırır
-> - `-i` - Paketi sistemə quraşdırır
+> **Note:** The `makepkg -si` command:
+> - `-s` - Automatically installs dependencies
+> - `-i` - Installs the package to the system
 
-### Addım 5: Quraşdırmanı Yoxlamaq
+### Step 5: Verify the Installation
 
 ```bash
-# Yay versiyasını yoxlayın
+# Check Yay version
 yay --version
 ```
 
-Əgər versiya məlumatı görsəniz, uğurla quraşdırmısınız!
+If version information appears, you have successfully installed it!
 
-### Tam Skript (Avtomatik Quraşdırma)
+### Complete Script (Automatic Installation)
 
 ```bash
 #!/bin/bash
 set -e
 
-echo "=== Yay Quraşdırılması Başlayır ==="
+echo "=== Yay Installation Starting ==="
 
-# Müvəqqəti qovluq
+# Temporary directory
 cd /tmp
 rm -rf yay-build 2>/dev/null || true
 mkdir -p yay-build
 cd yay-build
 
-# Mənbəni endir
-echo "[1/3] Yay mənbə kodu endirilir..."
+# Download source
+echo "[1/3] Downloading Yay source code..."
 git clone https://aur.archlinux.org/yay.git
 
-# Paketi yığ
-echo "[2/3] Paket yığılır..."
+# Build package
+echo "[2/3] Building package..."
 cd yay
 makepkg -si --noconfirm
 
-# Təmizlik
-echo "[3/3] Təmizlik aparılır..."
+# Cleanup
+echo "[3/3] Cleaning up..."
 cd /
 rm -rf /tmp/yay-build
 
-echo "=== Yay Uğurla Quraşdırıldı ==="
+echo "=== Yay Successfully Installed ==="
 yay --version
 ```
 
 ---
 
-## Legacy Launcher Quraşdırılması
+## Legacy Launcher Installation
 
-### Üsul 1: Yay ilə Quraşdırma (Tövsiyə Olunan)
+### Method 1: Install with Yay (Recommended)
 
-Yay quraşdırıldıqdan sonra Legacy Launcher-i çox asanlıqla quraşdıra bilərsiniz:
+After installing Yay, you can easily install Legacy Launcher:
 
 ```bash
-# AUR-da axtarış edin
+# Search in AUR
 yay -Ss legacylauncher
 ```
 
 ```bash
-# Legacy Launcher-i quraşdırın
+# Install Legacy Launcher
 yay -S legacylauncher
 ```
 
-> **Qeyd:** Quraşdırma zamanı soruşulan suallara cavab vermək lazım ola bilər. Adətən standart cavablar (Enter basmaq) kifayətdir.
+> **Note:** You may need to answer questions during installation. Usually, default answers (pressing Enter) are sufficient.
 
-### Üsul 2: Əl ilə Quraşdırma
+### Method 2: Manual Installation
 
-Əgər Yay işlətmək istəmirsinizsə:
+If you don't want to use Yay:
 
 ```bash
-# Müvəqqəti qovluq yaradın
+# Create a temporary directory
 cd /tmp
 mkdir -p legacy-build
 cd legacy-build
 
-# Mənbəni endirin
+# Download the source
 git clone https://aur.archlinux.org/legacylauncher.git
 
-# Paket qovluğuna keçin
+# Navigate to the package directory
 cd legacylauncher
 
-# Paketi yığın və quraşdırın
+# Build and install the package
 makepkg -si
 ```
 
-### Quraşdırmanı Yoxlamaq
+### Verify the Installation
 
 ```bash
-# Legacy Launcher-in quraşdırılıb-quraşdırılmadığını yoxlayın
+# Check if Legacy Launcher is installed
 which legacylauncher
 
-# Və ya
+# Or
 pacman -Q legacylauncher
 ```
 
 ---
 
-## Legacy Launcher İşə Salınması
+## Launching Legacy Launcher
 
-### Qrafik İnterfeysdən
+### From the Graphical Interface
 
-1. Tətbiq menyusuna daxil olun
-2. "Legacy Launcher" və ya "Minecraft" axtarın
-3. İkon üzərinə klikləyin
+1. Open the application menu
+2. Search for "Legacy Launcher" or "Minecraft"
+3. Click on the icon
 
-### Terminaldan
+### From Terminal
 
 ```bash
-# Legacy Launcher-i işə salın
+# Launch Legacy Launcher
 legacylauncher
 ```
 
-### Java Versiyasını Yoxlamaq
+### Check Java Version
 
-Legacy Launcher Java tələb edir. Java-nın quraşdırılıb-quraşdırılmadığını yoxlayın:
+Legacy Launcher requires Java. Check if Java is installed:
 
 ```bash
-# Java versiyasını yoxlayın
+# Check Java version
 java -version
 ```
 
-Əgər quraşdırılmayıbsa:
+If not installed:
 
 ```bash
-# OpenJDK quraşdırın (tövsiyə olunan)
+# Install OpenJDK (recommended)
 sudo pacman -S jdk-openjdk
 
-# Və ya JRE variantı
+# Or JRE variant
 sudo pacman -S jre-openjdk
 ```
 
 ---
 
-## Problemlərin Həlli
+## Troubleshooting
 
-### Problem 1: "command not found" xətası
+### Problem 1: "command not found" error
 
-**Səbəb:** Paket düzgün quraşdırılmayıb və ya PATH-də yoxdur.
+**Cause:** The package is not installed correctly or is not in the PATH.
 
-**Həlli:**
+**Solution:**
 
 ```bash
-# Paketin quraşdırılıb-quraşdırılmadığını yoxlayın
+# Check if the package is installed
 pacman -Q | grep -i legacy
 
-# Əgər yoxdursa, yenidən quraşdırın
+# If not, reinstall
 yay -S legacylauncher
 ```
 
-### Problem 2: "permission denied" xətası
+### Problem 2: "permission denied" error
 
-**Səbəb:** İcazə problemi.
+**Cause:** Permission issue.
 
-**Həlli:**
+**Solution:**
 
 ```bash
-# İcazələri düzəldin
+# Fix permissions
 sudo chmod +x /usr/bin/legacylauncher
 ```
 
-### Problem 3: Java xətaları
+### Problem 3: Java errors
 
-**Səbəb:** Java quraşdırılmayıb və ya düzgün versiya deyil.
+**Cause:** Java is not installed or the version is incorrect.
 
-**Həlli:**
+**Solution:**
 
 ```bash
-# Java versiyasını yoxlayın
+# Check Java version
 java -version
 
-# Ən son OpenJDK quraşdırın
+# Install the latest OpenJDK
 sudo pacman -S jdk-openjdk
 
-# Alternativ olaraq Java 8 (bəzi köhnə versiyalar üçün)
+# Alternatively, Java 8 (for some older versions)
 sudo pacman -S jdk8-openjdk
 ```
 
-### Problem 4: AUR quraşdırma uğursuzluğu
+### Problem 4: AUR installation failure
 
-**Səbəb:** Asılılıqlar çatışmır.
+**Cause:** Dependencies are missing.
 
-**Həlli:**
+**Solution:**
 
 ```bash
-# Sistemi yeniləyin
+# Update the system
 sudo pacman -Syu
 
-# Asılılıqları əl ilə quraşdırın
+# Install dependencies manually
 sudo pacman -S --needed base-devel git
 
-# Yay-i yenidən quraşdırmağa çalışın
+# Try reinstalling Yay
 cd /tmp
 rm -rf yay-build
 git clone https://aur.archlinux.org/yay.git
@@ -278,109 +279,109 @@ cd yay
 makepkg -si
 ```
 
-### Problem 5: "unable to lock database" xətası
+### Problem 5: "unable to lock database" error
 
-**Səbəb:** Başqa bir pacman prosesi işləyir.
+**Cause:** Another pacman process is running.
 
-**Həlli:**
+**Solution:**
 
 ```bash
-# Kilid faylını silin (diqqətlə!)
+# Delete the lock file (carefully!)
 sudo rm /var/lib/pacman/db.lck
 ```
 
 ---
 
-## Faydalı Əmrlər
+## Useful Commands
 
-### Yay Əmrləri
+### Yay Commands
 
 ```bash
-# AUR-da paket axtarın
-yay -Ss <paket-adı>
+# Search for a package in AUR
+yay -Ss <package-name>
 
-# Paket quraşdırın
-yay -S <paket-adı>
+# Install a package
+yay -S <package-name>
 
-# Paket silin
-yay -R <paket-adı>
+# Remove a package
+yay -R <package-name>
 
-# Sistemi yeniləyin (rəsmi + AUR)
+# Update the system (official + AUR)
 yay -Syu
 
-# Yalnız AUR paketlərini yeniləyin
+# Update only AUR packages
 yay -Sua
 
-# Quraşdırılmış AUR paketlərini siyahılayın
+# List installed AUR packages
 yay -Qm
 ```
 
-### Legacy Launcher Əmrləri
+### Legacy Launcher Commands
 
 ```bash
-# Legacy Launcher-i işə salın
+# Launch Legacy Launcher
 legacylauncher
 
-# Konfiqurasiya qovluğunu açın
+# Open configuration directory
 ~/.minecraft
 
-# Log fayllarını yoxlayın
+# Check log files
 ~/.minecraft/logs/latest.log
 ```
 
 ---
 
-## Tez-tez Verilən Suallar
+## Frequently Asked Questions
 
-### Sual 1: Legacy Launcher nədir?
+### Question 1: What is Legacy Launcher?
 
-**Cavab:** Legacy Launcher - Minecraft oyununu işə salmaq üçün istifadə olunan üçüncü tərəf başladıcıdır. Rəsmi başladıcıya alternativ olaraq daha çox xüsusiyyət təklif edir.
+**Answer:** Legacy Launcher is a third-party launcher used to launch the Minecraft game. It offers more features as an alternative to the official launcher.
 
-### Sual 2: Yay təhlükəsizdirmi?
+### Question 2: Is Yay safe?
 
-**Cavab:** Yay özü təhlükəsizdir, ancaq AUR-dan quraşdırılan paketlərə diqqət yetirin. PKGBUILD fayllarını yoxlamaq tövsiyə olunur.
+**Answer:** Yay itself is safe, but be careful with packages installed from AUR. It is recommended to check PKGBUILD files.
 
-### Sual 3: Legacy Launcher-i silmək istəyirəm
+### Question 3: I want to remove Legacy Launcher
 
-**Cavab:**
+**Answer:**
 
 ```bash
-# Legacy Launcher-i silin
+# Remove Legacy Launcher
 sudo pacman -R legacylauncher
 
-# Konfiqurasiya fayllarını da silmək istəyirsinizsə
+# If you also want to remove configuration files
 rm -rf ~/.minecraft
 ```
 
-### Sual 4: Yay-i silmək istəyirəm
+### Question 4: I want to remove Yay
 
-**Cavab:**
+**Answer:**
 
 ```bash
-# Yay-i silin
+# Remove Yay
 sudo pacman -R yay
 
-# Cache təmizləyin
+# Clear cache
 rm -rf ~/.cache/yay
 ```
 
 ---
 
-## Əlaqə və Dəstək
+## Contact and Support
 
-- **Arch Wiki:** https://wiki.archlinux.org/
+- **Arch Wiki:** www.youtube.com/@Doeyw
 - **AUR:** https://aur.archlinux.org/
 - **Yay GitHub:** https://github.com/Jguer/yay
 - **Legacy Launcher:** https://www.legacylauncher.com/
 
 ---
 
-## Lisenziya
+## License
 
-Bu təlimat təhsil məqsədləri üçün hazırlanmışdır. İstifadə etdiyiniz proqramların lisenziya şərtlərinə əməl edin.
+This guide was prepared for educational purposes. Please comply with the license terms of the software you use.
 
 ---
 
-**Son Yenilənmə:** 2026-03-08
+**Last Updated:** 2026-03-08
 
-**Müəllif:** Arch Linux İstifadəçi Təlimatı
+**Author:** Doeyw
