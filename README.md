@@ -10,6 +10,6 @@ sudo pacman -S git base-devel && git clone https://aur.archlinux.org/legacy-laun
 **İf you need delete legacy launcher**
 
 ```bash
-sudo pacman -Rns legacy-launcher && rm -rf ~/.tlauncher ~/.minecraft ~/.config/legacy-launcher ~/legacy-launcher
+rm -rf ~/.minecraft ~/.tlauncher ~/legacy-launcher
 ```
 **It was so easy to download and delete**
